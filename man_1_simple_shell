@@ -1,0 +1,103 @@
+.TH hsh 1 "May 2026" "Simple Shell" "User Commands"
+
+.SH NAME
+hsh \- a simple UNIX command interpreter written in C
+
+.SH SYNOPSIS
+.B hsh
+
+.SH DESCRIPTION
+.B hsh
+is a simple shell created as part of the Holberton School curriculum.
+
+This project was built to help us better understand how a UNIX shell
+works internally by recreating some of the basic behaviors of
+the standard shell.
+
+The shell reads commands from standard input, interprets them,
+creates child processes, and executes programs using
+the
+.B execve
+system call.
+
+It supports both interactive and non-interactive execution modes.
+
+.SH HOW IT WORKS
+The shell performs the following steps:
+
+.TP
+1.
+Displays a prompt and waits for user input
+
+.TP
+2.
+Reads the command entered by the user
+
+.TP
+3.
+Parses the command and its arguments
+
+.TP
+4.
+Creates a child process using
+.B fork
+
+.TP
+5.
+Executes the command using
+.B execve
+
+.TP
+6.
+Waits for the child process to finish before displaying the prompt again
+
+.SH FEATURES
+.TP
+Execute commands with arguments
+.TP
+Handle commands using the PATH environment variable
+.TP
+Interactive mode support
+.TP
+Non-interactive mode support
+.TP
+EOF handling using Ctrl + D
+
+.SH USAGE
+Interactive mode:
+
+.B
+./hsh
+
+Example:
+
+.B
+($) /bin/ls
+
+Non-interactive mode:
+
+.B
+echo "/bin/ls" | ./hsh
+
+.SH RETURN VALUE
+The shell returns 0 on success or exits when an error or EOF is encountered.
+
+.SH AUTHORS
+This shell project was created and developed by:
+
+.br
+Albedah Bothaina
+.br
+Alhamdan Osama
+
+.SH NOTES
+This project was written in C and compiled on Ubuntu 20.04 LTS using:
+
+.B
+gcc -Wall -Werror -Wextra -pedantic -std=gnu89
+
+.SH SEE ALSO
+sh(1), fork(2), execve(2), wait(2), getline(3)
+
+.SH COPYRIGHT
+This project is intended for educational purposes only.
