@@ -1,15 +1,16 @@
 #include "shell.h"
 
 /**
- * get_path - finds command path
+ * get_path - finds command in PATH
  * @command: command entered
  *
  * Return: full path or NULL
  */
 char *get_path(char *command)
 {
-	char *path_env, *path_copy, *dir;
+	char *path = NULL, *path_copy, *token;
 	char *full_path;
+	int i;
 	static char buffer[1024];
 
 	if (strchr(command, '/'))
@@ -20,18 +21,25 @@ char *get_path(char *command)
 		return (NULL);
 	}
 
-	path_env = getenv("PATH");
+	for (i = 0; environ[i]; i++)
+	{
+		if (strncmp(environ[i], "PATH=", 5) == 0)
+		{
+			path = environ[i] + 5;
+			break;
+		}
+	}
 
-	if (path_env == NULL)
+	if (path == NULL)
 		return (NULL);
 
-	path_copy = strdup(path_env);
+	path_copy = strdup(path);
 
-	dir = strtok(path_copy, ":");
+	token = strtok(path_copy, ":");
 
-	while (dir != NULL)
+	while (token != NULL)
 	{
-		sprintf(buffer, "%s/%s", dir, command);
+		sprintf(buffer, "%s/%s", token, command);
 
 		if (access(buffer, X_OK) == 0)
 		{
@@ -40,7 +48,7 @@ char *get_path(char *command)
 			return (full_path);
 		}
 
-		dir = strtok(NULL, ":");
+		token = strtok(NULL, ":");
 	}
 
 	free(path_copy);
