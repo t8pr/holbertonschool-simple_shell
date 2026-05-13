@@ -12,7 +12,6 @@ void execute_cmd(char *command, char *prog_name, char *line)
 	int status;
 	char *args[2];
 
-	/* Task 2: Only one word, no arguments */
 	args[0] = command;
 	args[1] = NULL;
 
@@ -23,16 +22,16 @@ void execute_cmd(char *command, char *prog_name, char *line)
 		return;
 	}
 
-	if (pid == 0) /* Child process */
+	if (pid == 0)
 	{
 		if (execve(command, args, environ) == -1)
 		{
 			perror(prog_name);
-			free(line); /* CRITICAL: Prevent memory leak in child */
+			free(line);
 			exit(EXIT_FAILURE);
 		}
 	}
-	else /* Parent process */
+	else
 	{
 		wait(&status);
 	}
