@@ -22,6 +22,7 @@ int main(int argc, char **argv)
 			write(STDOUT_FILENO, "($) ", 4);
 
 		nread = getline(&line, &len, stdin);
+
 		if (nread == -1)
 		{
 			if (isatty(STDIN_FILENO))
@@ -30,16 +31,14 @@ int main(int argc, char **argv)
 			exit(EXIT_SUCCESS);
 		}
 
-		if (line[nread - 1] == '\n')
-			line[nread - 1] = '\0';
-
 		i = 0;
 		args[i] = strtok(line, " \n\t\r");
-		while (args[i] != NULL)
+		while (args[i] != NULL && i < 63)
 		{
 			i++;
 			args[i] = strtok(NULL, " \n\t\r");
 		}
+		args[i] = NULL;
 
 		if (args[0] != NULL)
 		{
