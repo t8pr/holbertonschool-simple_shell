@@ -10,9 +10,10 @@
 int main(int argc, char **argv)
 {
 	char *line = NULL;
-	char *command = NULL;
 	size_t len = 0;
 	ssize_t nread;
+	char *args[64];
+	int i;
 	(void)argc;
 
 	while (1)
@@ -21,7 +22,6 @@ int main(int argc, char **argv)
 			write(STDOUT_FILENO, "($) ", 4);
 
 		nread = getline(&line, &len, stdin);
-
 		if (nread == -1)
 		{
 			if (isatty(STDIN_FILENO))
@@ -30,11 +30,20 @@ int main(int argc, char **argv)
 			exit(EXIT_SUCCESS);
 		}
 
-		command = strtok(line, " \n\t\r");
+		if (line[nread - 1] == '\n')
+			line[nread - 1] = '\0';
 
-		if (command != NULL)
+		i = 0;
+		args[i] = strtok(line, " \n\t\r");
+		while (args[i] != NULL)
 		{
-			execute_cmd(command, argv[0], line);
+			i++;
+			args[i] = strtok(NULL, " \n\t\r");
+		}
+
+		if (args[0] != NULL)
+		{
+			execute_cmd(args, argv[0], line);
 		}
 	}
 
