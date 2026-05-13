@@ -13,5 +13,7 @@ extern char **environ;
 
 /* Function prototype */
 void execute_cmd(char **args, char *prog_name, char *line);
+char *get_path(char *command);
+void execute_command(char **argv);
 
 #endif /* SHELL_H */
