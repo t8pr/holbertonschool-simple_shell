@@ -4,8 +4,9 @@
  * execute_cmd - Creates a child process to execute a command
  * @command: The string containing the command path
  * @prog_name: The name of the shell (argv[0]) for error messages
+ * @line: The allocated buffer from getline to free on error
  */
-void execute_cmd(char *command, char *prog_name)
+void execute_cmd(char *command, char *prog_name, char *line)
 {
 	pid_t pid;
 	int status;
@@ -24,10 +25,10 @@ void execute_cmd(char *command, char *prog_name)
 
 	if (pid == 0) /* Child process */
 	{
-		/* Execute command with current environment */
 		if (execve(command, args, environ) == -1)
 		{
 			perror(prog_name);
+			free(line); /* CRITICAL: Prevent memory leak in child */
 			exit(EXIT_FAILURE);
 		}
 	}

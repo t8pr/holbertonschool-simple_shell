@@ -16,13 +16,13 @@ int main(int argc, char **argv)
 
 	while (1)
 	{
-		/* Display prompt only if input is from a terminal */
+		/* Display standard prompt if in interactive mode */
 		if (isatty(STDIN_FILENO))
-			write(STDOUT_FILENO, "#cisfun$ ", 9);
+			write(STDOUT_FILENO, "($) ", 4);
 
 		nread = getline(&line, &len, stdin);
 
-		/* Handle End of File (Ctrl+D) */
+		/* Handle Ctrl+D / EOF */
 		if (nread == -1)
 		{
 			if (isatty(STDIN_FILENO))
@@ -31,13 +31,13 @@ int main(int argc, char **argv)
 			exit(EXIT_SUCCESS);
 		}
 
-		/* Remove newline character from the end of the input */
+		/* Remove newline character from input */
 		if (line[nread - 1] == '\n')
 			line[nread - 1] = '\0';
 
-		/* Process the command if it's not an empty string */
-		if (strlen(line) > 0)
-			execute_cmd(line, argv[0]);
+		/* Execute only if the command is not empty */
+		if (line[0] != '\0')
+			execute_cmd(line, argv[0], line);
 	}
 
 	free(line);

@@ -12,6 +12,6 @@
 extern char **environ;
 
 /* Function prototype */
-void execute_cmd(char *command, char *prog_name);
+void execute_cmd(char *command, char *prog_name, char *line);
 
 #endif /* SHELL_H */
