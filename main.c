@@ -1,21 +1,24 @@
 #include "shell.h"
 
 /**
- * main - Entry point for the simple shell
+ * main - entry point for the simple shell
+ * @argc: argument count
+ * @argv: argument vector
  *
  * Return: 0 on success
  */
-int main(void)
+int main(int argc, char **argv)
 {
 	char *line = NULL;
 	size_t len = 0;
 	ssize_t nread;
+	(void)argc;
 
 	while (1)
 	{
-		/* Only display prompt if we are in a terminal */
+		/* Display prompt only in interactive mode */
 		if (isatty(STDIN_FILENO))
-			write(STDOUT_FILENO, "($) ", 4);
+			write(STDOUT_FILENO, "#cisfun$ ", 9);
 
 		nread = getline(&line, &len, stdin);
 
@@ -32,13 +35,9 @@ int main(void)
 		if (line[nread - 1] == '\n')
 			line[nread - 1] = '\0';
 
-		/* Ignore empty lines */
+		/* Only execute if the line is not empty */
 		if (strlen(line) > 0)
-		{
-			/* For now, this just prints what you typed */
-			/* In the next task, we will add execution logic */
-			printf("%s\n", line);
-		}
+			execute_cmd(line, argv[0]);
 	}
 
 	free(line);

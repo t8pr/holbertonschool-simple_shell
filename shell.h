@@ -7,10 +7,11 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <sys/stat.h>
 
-/* Function Prototypes */
-void display_prompt(void);
-void handle_command(char *command);
+/* Global environment variable */
+extern char **environ;
+
+/* Function prototype */
+void execute_cmd(char *command, char *prog_name);
 
 #endif /* SHELL_H */
