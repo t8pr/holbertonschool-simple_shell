@@ -1,4 +1,4 @@
-# 0x16. C - Simple Shell
+# C - Simple Shell
 
 ## Description
 A simple UNIX command line interpreter that implements basic shell functionality. This project is a milestone for understanding process creation, execution, and system calls in C.

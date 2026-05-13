@@ -1,9 +1,9 @@
 #include "shell.h"
 
 /**
- * main - entry point for the simple shell
- * @argc: argument count
- * @argv: argument vector
+ * main - Entry point for the simple shell
+ * @argc: Argument count
+ * @argv: Argument vector
  *
  * Return: 0 on success
  */
@@ -16,13 +16,13 @@ int main(int argc, char **argv)
 
 	while (1)
 	{
-		/* Display prompt only in interactive mode */
+		/* Display prompt only if input is from a terminal */
 		if (isatty(STDIN_FILENO))
 			write(STDOUT_FILENO, "#cisfun$ ", 9);
 
 		nread = getline(&line, &len, stdin);
 
-		/* Handle EOF (Ctrl+D) */
+		/* Handle End of File (Ctrl+D) */
 		if (nread == -1)
 		{
 			if (isatty(STDIN_FILENO))
@@ -31,11 +31,11 @@ int main(int argc, char **argv)
 			exit(EXIT_SUCCESS);
 		}
 
-		/* Remove newline character from input */
+		/* Remove newline character from the end of the input */
 		if (line[nread - 1] == '\n')
 			line[nread - 1] = '\0';
 
-		/* Only execute if the line is not empty */
+		/* Process the command if it's not an empty string */
 		if (strlen(line) > 0)
 			execute_cmd(line, argv[0]);
 	}

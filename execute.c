@@ -1,9 +1,9 @@
 #include "shell.h"
 
 /**
- * execute_cmd - creates a child process to execute a command
- * @command: the full path of the command
- * @prog_name: name of the shell (argv[0]) for error reporting
+ * execute_cmd - Creates a child process to execute a command
+ * @command: The string containing the command path
+ * @prog_name: The name of the shell (argv[0]) for error messages
  */
 void execute_cmd(char *command, char *prog_name)
 {
@@ -11,7 +11,7 @@ void execute_cmd(char *command, char *prog_name)
 	int status;
 	char *args[2];
 
-	/* Task 2 only requires handling one word (no arguments) */
+	/* Task 2: Only one word, no arguments */
 	args[0] = command;
 	args[1] = NULL;
 
@@ -24,7 +24,7 @@ void execute_cmd(char *command, char *prog_name)
 
 	if (pid == 0) /* Child process */
 	{
-		/* Pass command, args, and global environ to execve */
+		/* Execute command with current environment */
 		if (execve(command, args, environ) == -1)
 		{
 			perror(prog_name);
