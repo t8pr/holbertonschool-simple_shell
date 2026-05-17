@@ -13,5 +13,6 @@ extern int shell_status;
 
 char *get_path(char *command);
 void execute_command(char **argv);
+void print_env(void);
 
 #endif

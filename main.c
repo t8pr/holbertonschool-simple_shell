@@ -54,6 +54,12 @@ int main(void)
 				exit(shell_status);
 			}
 
+			if (strcmp(argv[0], "env") == 0)
+			{
+				print_env();
+				continue;
+			}
+
 			execute_command(argv);
 		}
 	}
