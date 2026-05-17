@@ -15,6 +15,7 @@ void execute_command(char **argv)
 	if (path == NULL)
 	{
 		fprintf(stderr, "./hsh: 1: %s: not found\n", argv[0]);
+		shell_status = 127;
 		return;
 	}
 
@@ -29,5 +30,8 @@ void execute_command(char **argv)
 		}
 	}
 	else
+	{
 		wait(&status);
+		shell_status = 0;
+	}
 }

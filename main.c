@@ -1,8 +1,10 @@
 #include "shell.h"
 
+int shell_status = 0;
+
 /**
  * main - simple shell
- * Return: 0
+ * Return: shell status
  */
 int main(void)
 {
@@ -23,7 +25,7 @@ int main(void)
 		if (read == -1)
 		{
 			free(line);
-			exit(0);
+			exit(shell_status);
 		}
 
 		if (line[0] == '\n')
@@ -37,8 +39,9 @@ int main(void)
 
 		while (token != NULL)
 		{
-			argv[i++] = token;
+			argv[i] = token;
 			token = strtok(NULL, " ");
+			i++;
 		}
 
 		argv[i] = NULL;
@@ -49,5 +52,5 @@ int main(void)
 
 	free(line);
 
-	return (0);
+	return (shell_status);
 }
