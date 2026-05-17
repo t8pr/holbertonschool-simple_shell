@@ -8,13 +8,14 @@ void execute_command(char **argv)
 {
 	pid_t pid;
 	char *path;
+	int status;
 
 	path = get_path(argv[0]);
 
 	if (path == NULL)
 	{
-		perror("./hsh");
-		return;
+		fprintf(stderr, "./hsh: 1: %s: not found\n", argv[0]);
+		exit(127);
 	}
 
 	pid = fork();
@@ -28,5 +29,5 @@ void execute_command(char **argv)
 		}
 	}
 	else
-		wait(NULL);
+		wait(&status);
 }
