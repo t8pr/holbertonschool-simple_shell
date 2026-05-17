@@ -47,7 +47,15 @@ int main(void)
 		argv[i] = NULL;
 
 		if (argv[0] != NULL)
+		{
+			if (strcmp(argv[0], "exit") == 0)
+			{
+				free(line);
+				exit(shell_status);
+			}
+
 			execute_command(argv);
+		}
 	}
 
 	free(line);
