@@ -32,6 +32,8 @@ void execute_command(char **argv)
 	else
 	{
 		wait(&status);
-		shell_status = 0;
+
+		if (WIFEXITED(status))
+			shell_status = WEXITSTATUS(status);
 	}
 }
