@@ -3,17 +3,36 @@
 int shell_status = 0;
 
 /**
- * process_command - handles builtins and execution
- * @argv: parsed arguments
- * @line: input line (for freeing on exit)
- *
- * Return: void
+ * parse_line - splits line into arguments
+ * @line: command line
+ * @argv: argument array
  */
-void process_command(char **argv, char *line)
+void parse_line(char *line, char **argv)
 {
-	if (argv[0] == NULL)
-		return;
+	char *token;
+	int i;
 
+	token = strtok(line, " ");
+
+	i = 0;
+
+	while (token != NULL)
+	{
+		argv[i] = token;
+		token = strtok(NULL, " ");
+		i++;
+	}
+
+	argv[i] = NULL;
+}
+
+/**
+ * handle_builtin - handles builtins
+ * @argv: argument array
+ * @line: input line
+ */
+void handle_builtin(char **argv, char *line)
+{
 	if (strcmp(argv[0], "exit") == 0)
 	{
 		free(line);
@@ -23,10 +42,11 @@ void process_command(char **argv, char *line)
 	if (strcmp(argv[0], "env") == 0)
 	{
 		print_env();
-		return;
 	}
-
-	execute_command(argv);
+	else
+	{
+		execute_command(argv);
+	}
 }
 
 /**
@@ -36,10 +56,10 @@ void process_command(char **argv, char *line)
  */
 int main(void)
 {
-	char *line = NULL, *token, *argv[64];
+	char *line = NULL;
 	size_t len = 0;
 	ssize_t read;
-	int i;
+	char *argv[64];
 
 	while (1)
 	{
@@ -47,6 +67,7 @@ int main(void)
 			printf("($) ");
 
 		read = getline(&line, &len, stdin);
+
 		if (read == -1)
 		{
 			free(line);
@@ -57,18 +78,14 @@ int main(void)
 			continue;
 
 		line[strcspn(line, "\n")] = '\0';
-		token = strtok(line, " ");
 
-		for (i = 0; token != NULL; i++)
-		{
-			argv[i] = token;
-			token = strtok(NULL, " ");
-		}
-		argv[i] = NULL;
+		parse_line(line, argv);
 
-		process_command(argv, line);
+		if (argv[0] != NULL)
+			handle_builtin(argv, line);
 	}
 
 	free(line);
+
 	return (shell_status);
 }
