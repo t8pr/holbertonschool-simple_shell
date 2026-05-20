@@ -3,6 +3,8 @@
 /**
  * execute_command - executes commands
  * @argv: command arguments
+ *
+ * Return: void
  */
 void execute_command(char **argv)
 {
@@ -20,7 +22,6 @@ void execute_command(char **argv)
 	}
 
 	pid = fork();
-
 	if (pid == 0)
 	{
 		if (execve(path, argv, environ) == -1)
@@ -32,7 +33,6 @@ void execute_command(char **argv)
 	else
 	{
 		wait(&status);
-
 		if (WIFEXITED(status))
 			shell_status = WEXITSTATUS(status);
 	}

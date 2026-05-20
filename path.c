@@ -8,8 +8,7 @@
  */
 char *get_path(char *command)
 {
-	char *path = NULL, *path_copy, *token;
-	char *full_path;
+	char *path = NULL, *path_copy, *token, *full_path;
 	int i;
 	static char buffer[1024];
 
@@ -17,7 +16,6 @@ char *get_path(char *command)
 	{
 		if (access(command, X_OK) == 0)
 			return (command);
-
 		return (NULL);
 	}
 
@@ -34,24 +32,20 @@ char *get_path(char *command)
 		return (NULL);
 
 	path_copy = strdup(path);
-
 	token = strtok(path_copy, ":");
 
 	while (token != NULL)
 	{
 		sprintf(buffer, "%s/%s", token, command);
-
 		if (access(buffer, X_OK) == 0)
 		{
 			free(path_copy);
 			full_path = buffer;
 			return (full_path);
 		}
-
 		token = strtok(NULL, ":");
 	}
 
 	free(path_copy);
-
 	return (NULL);
 }

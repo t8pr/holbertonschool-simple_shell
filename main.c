@@ -3,16 +3,42 @@
 int shell_status = 0;
 
 /**
+ * process_command - handles builtins and execution
+ * @argv: parsed arguments
+ * @line: input line (for freeing on exit)
+ *
+ * Return: void
+ */
+void process_command(char **argv, char *line)
+{
+	if (argv[0] == NULL)
+		return;
+
+	if (strcmp(argv[0], "exit") == 0)
+	{
+		free(line);
+		exit(shell_status);
+	}
+
+	if (strcmp(argv[0], "env") == 0)
+	{
+		print_env();
+		return;
+	}
+
+	execute_command(argv);
+}
+
+/**
  * main - simple shell
+ *
  * Return: shell status
  */
 int main(void)
 {
-	char *line = NULL;
+	char *line = NULL, *token, *argv[64];
 	size_t len = 0;
 	ssize_t read;
-	char *token;
-	char *argv[64];
 	int i;
 
 	while (1)
@@ -21,7 +47,6 @@ int main(void)
 			printf("($) ");
 
 		read = getline(&line, &len, stdin);
-
 		if (read == -1)
 		{
 			free(line);
@@ -32,39 +57,18 @@ int main(void)
 			continue;
 
 		line[strcspn(line, "\n")] = '\0';
-
 		token = strtok(line, " ");
 
-		i = 0;
-
-		while (token != NULL)
+		for (i = 0; token != NULL; i++)
 		{
 			argv[i] = token;
 			token = strtok(NULL, " ");
-			i++;
 		}
-
 		argv[i] = NULL;
 
-		if (argv[0] != NULL)
-		{
-			if (strcmp(argv[0], "exit") == 0)
-			{
-				free(line);
-				exit(shell_status);
-			}
-
-			if (strcmp(argv[0], "env") == 0)
-			{
-				print_env();
-				continue;
-			}
-
-			execute_command(argv);
-		}
+		process_command(argv, line);
 	}
 
 	free(line);
-
 	return (shell_status);
 }

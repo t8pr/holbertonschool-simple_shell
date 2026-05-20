@@ -2,6 +2,8 @@
 
 /**
  * print_env - prints environment variables
+ *
+ * Return: void
  */
 void print_env(void)
 {
